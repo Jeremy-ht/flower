@@ -37,9 +37,11 @@
         LEFT JOIN category c ON f.categoryid = c.id
         <where>
             <if test="categoryId != 0">
-                and f.categoryid = #{categoryId}
+                and f.categoryid = #{categoryId} and f.state = 1
             </if>
-            and (f.state = 1 || f.state =3)
+            <if test="categoryId == 0">
+              and ( f.state = 1 or f.state = 3)
+            </if>
         </where>
         ORDER BY
         f.creatime DESC

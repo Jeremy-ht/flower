@@ -35,4 +35,7 @@ public interface DetailMapper extends BaseMapper<Detail> {
     List<EchartsVo> getEchartsYY(String valueOf);
 
     List<EchartsVo> getEchartsInfo(String valueOf);
+
+    @Update("update orders set state = #{state} where flowerid = #{id}")
+    void pullScenery3(Integer id, Integer state);
 }

@@ -3,6 +3,7 @@ package com.isoft.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.isoft.dao.DetailMapper;
 import com.isoft.dao.FlowersMapper;
 import com.isoft.dao.OrdercentMapper;
 import com.isoft.pojo.entity.Detail;
@@ -33,6 +34,8 @@ public class FlowersController {
 
     @Autowired
     private DetailService detailService;
+    @Autowired
+    private DetailMapper detailMapper;
     @Autowired
     private FlowersService flowersService;
     @Autowired
@@ -67,10 +70,12 @@ public class FlowersController {
      * 发布
      */
     @GetMapping("/pullScenery/{id}/{state}")
-    public ResponseData pullScenery(@PathVariable("id") Integer id,@PathVariable("state") Integer state) {
+    public ResponseData pullScenery(@PathVariable("id") Integer id, @PathVariable("state") Integer state) {
         if (id == null) {
             return ResponseData.error().message("请求参数不能为空");
         }
+
+        detailMapper.pullScenery3(id, state);
 
         return detailService.pullScenery(id, state) ? ResponseData.success().message("成功！")
                 : ResponseData.error().message("失败!");
@@ -109,11 +114,11 @@ public class FlowersController {
 
         // 热销
 //        List<Flowers> li2 = flowersMapper.newFlower();
-        List<Flowers> li2=ordercentMapper.selectList2();
-        if (li2.size() < 4){
-            List<Flowers> li33=flowersMapper.selectList2(4 - li2.size());
+        List<Flowers> li2 = ordercentMapper.selectList2();
+        if (li2.size() < 4) {
+            List<Flowers> li33 = flowersMapper.selectList2(4 - li2.size());
             li2.addAll(li33);
-        }else {
+        } else {
             li2.stream().limit(4);
         }
 
